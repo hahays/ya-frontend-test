@@ -1,0 +1,21 @@
+:root {
+    --page-padding-mobile: 20px;
+    --page-padding-tablet: 72px;
+    --page-padding-desktop: 348.5px;
+
+    --font-title: 'Merriweather', serif;
+    --font-subtitle: 'Golos Text', sans-serif;
+    --color-bg: #f0f0f0;
+    --color-text: #313131;
+    --color-button-primary: #1f1f1f;
+    --color-button-secondary: transparent;
+    --color-button-secondary-border: #1f1f1f;
+    --color-red-highlight: #F54932;
+    --color-white: #ffffff;
+    --color-dark-gray: #313131;
+    --color-light-gray: #D0D0D0;
+    --color-blue-link: #3057a2;
+    --color-disclaimer-bg: #E9DED4;
+}
+
+
