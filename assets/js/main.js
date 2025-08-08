@@ -160,11 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.slider = this.container;
             this.prevButton = document.querySelector('.tournament-section__arrow--prev');
             this.nextButton = document.querySelector('.tournament-section__arrow--next');
-            this.desktopCurrent = document.getElementById('tournament-current-slide-desktop');
-            this.desktopTotal = document.getElementById('tournament-total-slides-desktop');
-            this.mobileCurrent = document.getElementById('tournament-current-slide-mobile');
-            this.mobileTotal = document.getElementById('tournament-total-slides-mobile');
-
             this.autoScrollDelay = 4000;
 
             this.cardsData = [
@@ -242,13 +237,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         updateCounter() {
-            const current = this.currentIndex + 1;
-            const total = this.cardsData.length;
-
-            if (this.desktopCurrent) this.desktopCurrent.textContent = current;
-            if (this.desktopTotal) this.desktopTotal.textContent = total;
-            if (this.mobileCurrent) this.mobileCurrent.textContent = current;
-            if (this.mobileTotal) this.mobileTotal.textContent = total;
+            if (window.innerWidth <= 768) {
+                const mobileCurrent = document.querySelector('[data-counter="current-mobile"]');
+                const mobileTotal = document.querySelector('[data-counter="total-mobile"]');
+                if (mobileCurrent) mobileCurrent.textContent = this.currentIndex + 1;
+                if (mobileTotal) mobileTotal.textContent = this.cardsData.length;
+            } else {
+                const totalPages = Math.ceil(this.cardsData.length / this.visibleCardsCount);
+                const currentPage = Math.floor(this.currentIndex / this.visibleCardsCount) + 1;
+                const desktopCurrent = document.querySelector('[data-counter="current-desktop"]');
+                const desktopTotal = document.querySelector('[data-counter="total-desktop"]');
+                if (desktopCurrent) desktopCurrent.textContent = currentPage;
+                if (desktopTotal) desktopTotal.textContent = totalPages;
+            }
         }
 
 
@@ -290,13 +291,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         nextSlide() {
-            this.currentIndex = (this.currentIndex + 1) % this.cardsData.length;
+            if (window.innerWidth <= 768) {
+                this.currentIndex = (this.currentIndex + 1) % this.cardsData.length;
+            } else {
+                const totalPages = Math.ceil(this.cardsData.length / this.visibleCardsCount);
+                const currentPage = Math.floor(this.currentIndex / this.visibleCardsCount);
+                const nextPage = (currentPage + 1) % totalPages;
+                this.currentIndex = nextPage * this.visibleCardsCount;
+            }
             this.render();
             this.resetAutoScroll();
         }
 
         prevSlide() {
-            this.currentIndex = (this.currentIndex - 1 + this.cardsData.length) % this.cardsData.length;
+            if (window.innerWidth <= 768) {
+                this.currentIndex = (this.currentIndex - 1 + this.cardsData.length) % this.cardsData.length;
+            } else {
+                const totalPages = Math.ceil(this.cardsData.length / this.visibleCardsCount);
+                const currentPage = Math.floor(this.currentIndex / this.visibleCardsCount);
+                const prevPage = (currentPage - 1 + totalPages) % totalPages;
+                this.currentIndex = prevPage * this.visibleCardsCount;
+            }
             this.render();
             this.resetAutoScroll();
         }
@@ -304,6 +319,12 @@ document.addEventListener('DOMContentLoaded', () => {
         addEventListeners() {
             if (this.prevButton) this.prevButton.addEventListener('click', () => this.prevSlide());
             if (this.nextButton) this.nextButton.addEventListener('click', () => this.nextSlide());
+
+            const mobilePrevButton = document.querySelector('.tournament-section__pagination--mobile .tournament-section__arrow--prev');
+            const mobileNextButton = document.querySelector('.tournament-section__pagination--mobile .tournament-section__arrow--next');
+
+            if (mobilePrevButton) mobilePrevButton.addEventListener('click', () => this.prevSlide());
+            if (mobileNextButton) mobileNextButton.addEventListener('click', () => this.nextSlide());
 
             this.slider.addEventListener('mouseenter', () => clearInterval(this.autoScrollInterval));
             this.slider.addEventListener('mouseleave', () => this.resetAutoScroll());
@@ -330,15 +351,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         render() {
-            const offset = this.currentIndex * (this.cardWidth + this.gap);
-            this.slider.scrollTo({left: offset, behavior: 'smooth'});
+            if (window.innerWidth <= 768) {
+                const offset = this.currentIndex * (this.cardWidth + this.gap);
+                this.slider.scrollTo({left: offset, behavior: 'smooth'});
+            } else {
+                const offset = this.currentIndex * (this.cardWidth + this.gap);
+                this.slider.scrollTo({left: offset, behavior: 'smooth'});
+            }
             this.updateCounter();
         }
 
         updateTotalSlides() {
-            const total = this.cardsData.length;
-            if (this.desktopTotal) this.desktopTotal.textContent = total;
-            if (this.mobileTotal) this.mobileTotal.textContent = total;
+            const totalPages = Math.ceil(this.cardsData.length / this.visibleCardsCount);
+
+            const desktopTotal = document.querySelector('[data-counter="total-desktop"]');
+            const mobileTotal = document.querySelector('[data-counter="total-mobile"]');
+
+            if (desktopTotal) desktopTotal.textContent = totalPages;
+            if (mobileTotal) mobileTotal.textContent = this.cardsData.length;
         }
     }
 
