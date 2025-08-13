@@ -94,8 +94,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const prevDisabled = this.currentIndex === 0;
             const nextDisabled = this.currentIndex === this.slides.length - 1;
 
-            this.prevButton.classList.toggle('transformation-slider__arrow--disabled', prevDisabled);
-            this.nextButton.classList.toggle('transformation-slider__arrow--disabled', nextDisabled);
+            const setState = (btn, disabled) => {
+                btn.classList.toggle('transformation-slider__arrow--disabled', disabled);
+                btn.setAttribute('aria-disabled', String(disabled));
+                if (disabled) {
+                    btn.setAttribute('tabindex', '-1');
+                } else {
+                    btn.removeAttribute('tabindex');
+                }
+            };
+
+            setState(this.prevButton, prevDisabled);
+            setState(this.nextButton, nextDisabled);
         }
 
         nextSlide() {
@@ -204,10 +214,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         init() {
             this.createCards();
-            this.addEventListeners();
             this.handleResize();
+            this.updateTotalSlides();
+            this.addEventListeners();
             this.startAutoScroll();
             this.setupIntersectionObserver();
+            window.addEventListener('resize', this.handleResize.bind(this), {passive: true});
         }
 
         setupIntersectionObserver() {
@@ -377,6 +389,21 @@ document.addEventListener('DOMContentLoaded', () => {
     new TournamentSlider('tournament-slider');
 
 });
+
+
+document.querySelectorAll('.hero-section__content, .debut-section__content, .chess-session__container, .transformation-section, .tournament-section')
+    .forEach(el => el.classList.add('reveal'));
+
+const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            obs.unobserve(e.target);
+        }
+    });
+}, {threshold: 0.15});
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 function createTickerHTML() {
     return `

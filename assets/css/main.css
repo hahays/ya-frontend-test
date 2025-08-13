@@ -145,7 +145,7 @@ body {
 @media (max-width: 768px) {
     .hero-section {
         background: url('/assets/images/content/bg_main_mobile.png') top center / cover no-repeat;
-        padding: 18px 20px 236px;
+        padding: 18px 20px 197px;
     }
 
     .hero-section__inner {
@@ -170,6 +170,7 @@ body {
             opacity: 0.8;
             border: none;
         }
+
         .button--secondary:hover {
             background-color: #FBCE51;
             color: #fff;
@@ -259,7 +260,7 @@ body {
 
 @media (max-width: 1367px) {
     .debut-section {
-        /*padding: 80px 0;*/
+
         margin: 80px 72px 64px;
     }
 }
@@ -356,7 +357,7 @@ body {
 
 @media (max-width: 1919px) {
     .chess-session {
-        /*padding: 80px 0;*/
+
         margin: 0 72px 200px;
     }
 }
@@ -416,7 +417,7 @@ body {
 
     .session-table__row:last-child {
         padding-bottom: 0;
-        border:none;
+        border: none;
     }
 
     .session-table__row--inline {
@@ -603,7 +604,7 @@ body {
 
 @media (max-width: 1367px) {
     .transformation-section {
-        /*padding: 80px 0;*/
+
         margin: 0 72px 200px;
     }
 
@@ -810,6 +811,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
+
 .tournament-section__arrow:not(.tournament-section__arrow--disabled):hover,
 .transformation-slider__arrow:not(.transformation-slider__arrow--disabled):hover {
     background: #FBCE51;
@@ -818,7 +820,7 @@ body {
 }
 
 .tournament-section__arrow:not(.tournament-section__arrow--disabled),
-.transformation-slider__arrow:not(.transformation-slider__arrow--disabled){
+.transformation-slider__arrow:not(.transformation-slider__arrow--disabled) {
     background: #313131;
     border-color: #313131;
 }
@@ -843,7 +845,8 @@ body {
     color: #313131;
 
 }
-.tournament-section__counter{
+
+.tournament-section__counter {
     font-family: var(--font-subtitle);
     font-size: 16px;
     font-weight: 300;
@@ -863,6 +866,7 @@ body {
     cursor: pointer;
     border: none;
 }
+
 .tournament-section-separator {
     display: inline-block;
     width: 14px;
@@ -934,7 +938,7 @@ body {
 
 @media (max-width: 1367px) {
     .tournament-section {
-        /*padding: 80px 0;*/
+
         margin: 0 72px 140px;
         padding: 0;
     }
@@ -976,6 +980,7 @@ body {
     font-size: 16px;
     text-align: start;
 }
+
 [data-counter="total-mobile"], [data-counter="total-desktop"] {
     color: #313131;
     opacity: 0.6;
@@ -1064,4 +1069,27 @@ body {
 .transformation-slider__arrow--disabled svg path {
     stroke: white !important;
     opacity: 1;
+}
+
+#chess-session, #tournament-section, #transformation-slider {
+    scroll-margin-top: 24px;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
